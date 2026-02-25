@@ -1926,18 +1926,9 @@ const createRecipe = async (req, res) => {
 }
 ```
 
-A few steps involved with this one:
-1. Find the user that is associated with this recipe (you are expecting it in the `req.body`)
-2. Create your recipe with the `Recipe` model
-3. Update your user in the database by adding your new recipe's ObjectID to their array
-4. Send a response
-
-First, you'll use `findById` to query the database with the user's `id` from the request body labeled as `author`:
-
-```js
-const user = await User.findById(req.body.author)
-// Returns the full user object
-```
+This is a simple one:
+1. Create your recipe with the `Recipe` model
+2. Send a response
 
 Now, to create your recipe:
 
@@ -1946,15 +1937,7 @@ const recipe = await Recipe.create(req.body)
 // The only way this works this simply is if the request body being sent properly matches your model
 ```
 
-Now that you have your new recipe back, let's add it to your user object. Then you update that document with the `.save()` method:
-
-```js
-user.recipes.push(recipe._id)
-// The MongoDB ObjectID is what needs to be in this array for the reference to work
-user.save()
-```
-
-Finally, you send a response:
+Now, you send a response:
 
 ```js
 res.send(recipe)
@@ -1990,12 +1973,8 @@ const Recipe = require('../models/Recipe.js')
 
 const createRecipe = async (req, res) => {
   try {
-    const user = await User.findById(req.body.author)
-    // Returns the full user object
     const recipe = await Recipe.create(req.body)
     // The only way this works this simply is if the request body being sent properly matches your model
-    user.recipes.push(recipe._id)
-    user.save()
     res.send(recipe)
     // This can be an EJS page later...
   } catch (error) {
@@ -2607,7 +2586,8 @@ module.exports = {
   createRecipe,
   getAllRecipes,
   getRecipeById,
-  updateRecipeById
+  updateRecipeById,
+  deleteRecipeById
 }
 ```
 
