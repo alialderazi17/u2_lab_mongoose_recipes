@@ -1,0 +1,11 @@
+<%- include('../partials/header.ejs') %>
+
+<h2>Edit Recipe</h2>
+<form action="/recipes/<%= recipe._id %>?_method=PUT" method="POST">
+  <input type="text" name="title" value="<%= recipe.title %>" required />
+  <textarea name="description" required><%= recipe.description %></textarea>
+  <input type="text" name="image" value="<%= recipe.image %>" />
+  <button type="submit">Update</button>
+</form>
+
+<%- include('../partials/footer.ejs') %>

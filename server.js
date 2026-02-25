@@ -11,6 +11,11 @@ const dns = require("dns")
 dns.setServers(["8.8.8.8", "1.1.1.1"])
 const db = require("./db")
 
+const middleware = require("./middleware")
+const authRouter = require("./routes/authRouter")
+const userRouter = require("./routes/userRouter")
+const recipeRouter = require("./routes/recipeRouter")
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, "public")))
@@ -26,9 +31,15 @@ app.use(
     }),
   })
 )
+app.use(middleware.passUserToView)
+
+app.use("/auth", authRouter)
+app.use("/users", userRouter)
+app.use("/recipes", recipeRouter)
 
 app.get("/", (req, res) => {
-  res.send("🧑‍🍳 Mongoose Recipes is waiting for orders . . . ")
+  // res.send("🧑‍🍳 Mongoose Recipes is waiting for orders . . . ")
+  res.render("index.ejs")
 })
 
 app.listen(PORT, () => {
