@@ -17,10 +17,8 @@ const registerUser = async (req, res) => {
       first: req.body.first,
       last: req.body.last,
       picture: req.body.picture,
-      // passwordHistory: [hashedPassword],
     })
 
-    // res.send(`🙏 Thanks for signing up, ${req.body.first}!`)
     res.render("./auth/thanks.ejs")
   } catch (error) {
     console.error("⚠️ An error has occurred registering a user!", error.message)
@@ -42,7 +40,6 @@ const signInUser = async (req, res) => {
       _id: user._id,
     }
     req.session.save(() => {
-      // res.send(`👋 Thanks for signing in, ${user.first}!`)
       res.redirect(`/users/${user._id}`)
     })
   } catch (error) {
@@ -80,12 +77,11 @@ const updatePassword = async (req, res) => {
       user.password
     )
     if (matchingOldAndNew) {
-      return res.send("❌ Your new password cannot be the old one!")
+      return res.send("❌ Your new password cannot be the same as the old one!")
     }
     const hashedPassword = await bcrypt.hash(req.body.newPassword, 12)
     user.password = hashedPassword
     await user.save()
-    // res.send(`✅ Your password has been updated, ${user.first}!`)
     res.render("./auth/confirm.ejs")
   } catch (error) {
     console.error(

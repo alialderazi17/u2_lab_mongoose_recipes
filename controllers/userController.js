@@ -13,7 +13,6 @@ const getUserById = async (req, res) => {
       picture: user.picture,
       recipes: recipes,
     }
-    // res.send(data)
     res.render("./users/profile.ejs", { user: data })
   } catch (error) {
     console.error(`⚠️ An error occurred finding a user!`, error.message)
